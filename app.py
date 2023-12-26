@@ -9,4 +9,5 @@ def index():  # function called by '/' route
     return 'Hello World! This App is built using Flask.'
 
 
-app.run(host='0.0.0.0', port=8000)  # starts the web app at port 8000
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8000)  # starts the web app at port 8000
