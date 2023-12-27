@@ -1,13 +1,27 @@
-# Filename: app.py
-from flask import Flask  # import Flask in Python
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
-app = Flask(__name__)  # create an instance of a Flask app
+# create an instance of a Flask app (referencing this file)
+app = Flask(__name__)
+# three "/": relative path; four is absolute
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+db = SQLAlchemy(app)  # initialize database
+
+
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text(200), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Task %r>' % self.id
 
 
 @app.route('/')  # route called by user
 def index():  # function called by '/' route
-    return 'Hello World! This App is built using Flask.'
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000)  # starts the web app at port 8000
+    app.run(debug=True)  # starts the web app at port 8000
